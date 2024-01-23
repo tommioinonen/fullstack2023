@@ -3,7 +3,7 @@ import { useState } from 'react'
 const Button = (props) => <button onClick={props.handleClick}> {props.text} </button>
 
 const getRandomInt = (max) => {
-  return Math.floor(Math.random() * max);
+  return Math.floor(Math.random() * max)
 }
 
 const App = () => {
