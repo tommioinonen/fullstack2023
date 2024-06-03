@@ -16,7 +16,6 @@ const Total = ({ parts }) => {
   )
 }
 
-
 const Content = ({ parts }) => {
   return (
     <div>
