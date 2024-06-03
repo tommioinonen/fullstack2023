@@ -52,7 +52,7 @@ const App = () => {
             }, 5000)
           })
           .catch(error => {
-            setNotification({ message: `The person '${existingPerson.name}' was already removed from the server`, type: 'error' })
+            setNotification({ message: `Information of ${existingPerson.name} has already been removed from server`, type: 'error' })
             setTimeout(() => {
               setNotification({ message: null, type: '' })
             }, 5000)
@@ -91,6 +91,13 @@ const App = () => {
             setNotification({ message: null, type: '' })
           }, 5000)
         })
+        .catch(error => {
+          setNotification({ message: `Information of ${person.name} has already been removed from server`, type: 'error' })
+          setTimeout(() => {
+            setNotification({ message: null, type: '' })
+          }, 5000)
+          setPersons(persons.filter(p => p.id !== id))
+        })
     }
   }
 
@@ -120,4 +127,3 @@ const App = () => {
 }
 
 export default App
-
