@@ -3,12 +3,14 @@ import personsService from './person'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
+  const [notification, setNotification] = useState({ message: null, type: '' })
 
   useEffect(() => {
     personsService
@@ -44,9 +46,16 @@ const App = () => {
             setPersons(persons.map(person => person.id !== existingPerson.id ? person : returnedPerson))
             setNewName('')
             setNewNumber('')
+            setNotification({ message: `Updated ${returnedPerson.name}'s number`, type: 'success' })
+            setTimeout(() => {
+              setNotification({ message: null, type: '' })
+            }, 5000)
           })
           .catch(error => {
-            alert(`The person '${existingPerson.name}' was already removed from the server`)
+            setNotification({ message: `The person '${existingPerson.name}' was already removed from the server`, type: 'error' })
+            setTimeout(() => {
+              setNotification({ message: null, type: '' })
+            }, 5000)
             setPersons(persons.filter(person => person.id !== existingPerson.id))
           })
       }
@@ -62,6 +71,10 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
+          setNotification({ message: `Added ${returnedPerson.name}`, type: 'success' })
+          setTimeout(() => {
+            setNotification({ message: null, type: '' })
+          }, 5000)
         })
     }
   }
@@ -73,6 +86,10 @@ const App = () => {
         .remove(id)
         .then(() => {
           setPersons(persons.filter(p => p.id !== id))
+          setNotification({ message: `Deleted ${person.name}`, type: 'success' })
+          setTimeout(() => {
+            setNotification({ message: null, type: '' })
+          }, 5000)
         })
     }
   }
@@ -86,6 +103,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification.message} type={notification.type} />
       <Filter searchTerm={searchTerm} handleSearchChange={handleSearchChange} />
       <h3>Add a new</h3>
       <PersonForm 
@@ -102,3 +120,4 @@ const App = () => {
 }
 
 export default App
+
